@@ -48,7 +48,7 @@ public class AboutActivity extends Activity {
         btnWebsite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = "https://mcpesource.github.io";
+                String url = "https://mcpe-source.github.io";
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
             }
         });
