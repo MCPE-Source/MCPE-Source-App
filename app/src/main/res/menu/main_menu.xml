@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_profile"
+        android:icon="@drawable/perm_group_personal_info"
+        android:showAsAction="always"
+        android:title="Profile" />
+    <item
+        android:id="@+id/action_search_global"
+        android:showAsAction="never"
+        android:title="Search Globally" />
+    <item
+        android:id="@+id/action_upload"
+        android:showAsAction="never"
+        android:title="Upload Content" />
+
+    <item
+        android:id="@+id/action_about"
+        android:showAsAction="never"
+        android:title="About" />
+</menu>

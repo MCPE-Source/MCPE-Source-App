@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload Content"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+        <RadioGroup
+            android:id="@+id/radio_group_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <RadioButton
+                android:id="@+id/radio_textures"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Texture"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/radio_maps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Map"/>
+
+            <RadioButton
+                android:id="@+id/radio_plugins"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Plugin"/>
+
+            <RadioButton
+                android:id="@+id/radio_mods"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mod"/>
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/edit_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Title"
+            android:layout_marginTop="8dp"/>
+
+        <Button
+            android:id="@+id/btn_select_versions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Game Versions"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/text_selected_versions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="No versions selected"
+            android:padding="4dp"
+            android:layout_marginBottom="4dp"/>
+
+        <Spinner
+            android:id="@+id/spinner_core"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"/>
+
+        <Spinner
+            android:id="@+id/spinner_php"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"/>
+
+        <Spinner
+            android:id="@+id/spinner_mod_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/edit_short_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Short Description (for list)"
+            android:maxLength="100"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/edit_full_desc"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:hint="Full Description (Markdown supported, max 7000 chars)"
+            android:gravity="top|start"
+            android:maxLength="7000"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/edit_alt_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Alternative Download Link (Optional)"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/edit_original_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Original Link (Optional)"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/edit_license"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="License (Optional)"
+            android:layout_marginTop="8dp"/>
+
+        <Button
+            android:id="@+id/btn_choose_file"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Choose Content File (Max 25MB)"/>
+
+        <TextView
+            android:id="@+id/text_file_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No file selected"/>
+
+        <LinearLayout
+            android:id="@+id/layout_screenshots"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/btn_choose_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Thumbnail / Screenshot (Max 5)"/>
+
+            <TextView
+                android:id="@+id/text_image_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0/5 images selected"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Upload"/>
+
+    </LinearLayout>
+</ScrollView>

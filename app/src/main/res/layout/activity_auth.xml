@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GitHub Authorization"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
+        
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log in to GitHub to upload content"
+        android:layout_marginTop="8dp"/>
+        
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Login with GitHub"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="When uploading content, the storage repository will be forked to your account"
+        android:textStyle="italic"
+        android:textSize="12sp"
+        android:textAlignment="center"
+        android:layout_marginStart="48sp"
+        android:layout_marginEnd="48sp"
+        android:layout_marginTop="24dp"/>
+</LinearLayout>
