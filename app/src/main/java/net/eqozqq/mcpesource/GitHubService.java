@@ -1,75 +1,76 @@
 package net.eqozqq.mcpesource;
 
-import android.os.AsyncTask;
+import android.content.Context;
 import org.json.JSONArray;
 import org.json.JSONException;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.File;
+import java.io.IOException;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GitHubService {
 
     private static final String BASE_URL = "https://raw.githubusercontent.com/MCPE-Source/";
+    private static GitHubApi api;
 
     public interface DataCallback {
         void onSuccess(JSONArray data);
-
         void onError(String error);
     }
 
-    public static void fetchContent(final String type, final DataCallback callback) {
-        new AsyncTask<Void, Void, String>() {
+    private static GitHubApi getApi(Context context) {
+        if (api == null) {
+            File httpCacheDirectory = new File(context.getCacheDir(), "http-cache");
+            int cacheSize = 10 * 1024 * 1024;
+            Cache cache = new Cache(httpCacheDirectory, cacheSize);
+
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .cache(cache)
+                    .build();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            api = retrofit.create(GitHubApi.class);
+        }
+        return api;
+    }
+
+    public static void fetchContent(Context context, final String type, final DataCallback callback) {
+        String repo;
+        if (type.equals("maps")) repo = "maps";
+        else if (type.equals("plugins")) repo = "plugins";
+        else if (type.equals("mods")) repo = "mods";
+        else repo = "textures";
+
+        getApi(context).getRepoContent(repo).enqueue(new Callback<ResponseBody>() {
             @Override
-            protected String doInBackground(Void... voids) {
-                try {
-                    String repo;
-                    if (type.equals("maps"))
-                        repo = "maps";
-                    else if (type.equals("plugins"))
-                        repo = "plugins";
-                    else if (type.equals("mods"))
-                        repo = "mods";
-                    else
-                        repo = "textures";
-
-                    URL url = new URL(BASE_URL + repo + "/main/" + repo + ".json?t=" + System.currentTimeMillis());
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("GET");
-                    conn.setUseCaches(false);
-                    conn.setDefaultUseCaches(false);
-                    conn.addRequestProperty("Cache-Control", "no-cache, max-age=0");
-                    conn.addRequestProperty("Pragma", "no-cache");
-
-                    if (conn.getResponseCode() != 200) {
-                        return null;
-                    }
-
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    StringBuilder result = new StringBuilder();
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        result.append(line);
-                    }
-                    return result.toString();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(String result) {
-                if (result != null) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
                     try {
-                        callback.onSuccess(new JSONArray(result));
-                    } catch (JSONException e) {
+                        String jsonString = response.body().string();
+                        callback.onSuccess(new JSONArray(jsonString));
+                    } catch (IOException | JSONException e) {
                         callback.onError(e.getMessage());
                     }
                 } else {
-                    callback.onError("Failed to fetch data of type " + type);
+                    callback.onError("Error: " + response.code());
                 }
             }
-        }.execute();
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                callback.onError(t.getMessage());
+            }
+        });
     }
 }

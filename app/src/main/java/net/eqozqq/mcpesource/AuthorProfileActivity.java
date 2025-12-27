@@ -77,7 +77,7 @@ public class AuthorProfileActivity extends Activity {
     }
 
     private void loadAuthorContent(final String authorName) {
-        GitHubService.fetchContent("maps", new GitHubService.DataCallback() {
+        GitHubService.fetchContent(AuthorProfileActivity.this, "maps", new GitHubService.DataCallback() {
             @Override
             public void onSuccess(JSONArray data) {
                 filterAndAdd(data, "maps", authorName);
@@ -88,7 +88,7 @@ public class AuthorProfileActivity extends Activity {
             }
         });
 
-        GitHubService.fetchContent("textures", new GitHubService.DataCallback() {
+        GitHubService.fetchContent(AuthorProfileActivity.this, "textures", new GitHubService.DataCallback() {
             @Override
             public void onSuccess(JSONArray data) {
                 filterAndAdd(data, "textures", authorName);
@@ -99,7 +99,7 @@ public class AuthorProfileActivity extends Activity {
             }
         });
 
-        GitHubService.fetchContent("plugins", new GitHubService.DataCallback() {
+        GitHubService.fetchContent(AuthorProfileActivity.this, "plugins", new GitHubService.DataCallback() {
             @Override
             public void onSuccess(JSONArray data) {
                 filterAndAdd(data, "plugins", authorName);
@@ -110,7 +110,7 @@ public class AuthorProfileActivity extends Activity {
             }
         });
 
-        GitHubService.fetchContent("mods", new GitHubService.DataCallback() {
+        GitHubService.fetchContent(AuthorProfileActivity.this, "mods", new GitHubService.DataCallback() {
             @Override
             public void onSuccess(JSONArray data) {
                 filterAndAdd(data, "mods", authorName);

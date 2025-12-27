@@ -149,7 +149,7 @@ public class ProfileActivity extends Activity {
         String[] types = {"maps", "textures", "plugins", "mods"};
 
         for (final String type : types) {
-            GitHubService.fetchContent(type, new GitHubService.DataCallback() {
+            GitHubService.fetchContent(ProfileActivity.this, type, new GitHubService.DataCallback() {
                 @Override
                 public void onSuccess(JSONArray data) {
                     for (int i = 0; i < data.length(); i++) {

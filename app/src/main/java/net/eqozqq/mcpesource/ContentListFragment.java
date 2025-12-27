@@ -120,7 +120,8 @@ public abstract class ContentListFragment extends Fragment {
     private void loadData() {
         if (!swipeRefreshLayout.isRefreshing())
             progressBar.setVisibility(View.VISIBLE);
-        GitHubService.fetchContent(getContentType(), new GitHubService.DataCallback() {
+
+        GitHubService.fetchContent(getActivity(), getContentType(), new GitHubService.DataCallback() {
             @Override
             public void onSuccess(JSONArray data) {
                 if (getActivity() == null)

@@ -1,47 +1,25 @@
 package net.eqozqq.mcpesource;
 
-import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Environment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.Toast;
-import java.io.File;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 public class Utils {
 
-    public static void loadImage(final String url, final android.widget.ImageView imageView) {
-        imageView.setTag(url);
-        new AsyncTask<Void, Void, android.graphics.Bitmap>() {
-            @Override
-            protected android.graphics.Bitmap doInBackground(Void... voids) {
-                try {
-                    java.net.URL u = new java.net.URL(url);
-                    return android.graphics.BitmapFactory.decodeStream(u.openConnection().getInputStream());
-                } catch (Exception e) {
-                    return null;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(android.graphics.Bitmap bitmap) {
-                Object tag = imageView.getTag();
-                if (tag != null && tag.equals(url)) {
-                    if (bitmap != null) {
-                        imageView.setImageBitmap(bitmap);
-                    }
-                }
-            }
-        }.execute();
+    public static void loadImage(final String url, final ImageView imageView) {
+        Glide.with(imageView.getContext())
+                .load(url)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(android.R.drawable.ic_menu_gallery)
+                .error(android.R.drawable.stat_notify_error)
+                .into(imageView);
     }
 
     public static void downloadFile(final Context context, String url, final String fileName) {
@@ -73,8 +51,7 @@ public class Utils {
                     q.setFilterById(downloadId);
                     Cursor cursor = downloadManager.query(q);
                     if (cursor.moveToFirst()) {
-                        int bytesDownloadedIndex = cursor
-                                .getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR);
+                        int bytesDownloadedIndex = cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR);
                         int bytesTotalIndex = cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES);
 
                         if (bytesDownloadedIndex != -1 && bytesTotalIndex != -1) {
@@ -83,13 +60,9 @@ public class Utils {
 
                             if (bytesTotal > 0) {
                                 final int progress = (int) ((bytesDownloaded * 100L) / bytesTotal);
-                                ((android.app.Activity) context).runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        progressDialog.setMessage(
-                                                bytesDownloaded / 1024 + "KB / " + bytesTotal / 1024 + "KB");
-                                        progressDialog.setProgress(progress);
-                                    }
+                                ((android.app.Activity) context).runOnUiThread(() -> {
+                                    progressDialog.setMessage(bytesDownloaded / 1024 + "KB / " + bytesTotal / 1024 + "KB");
+                                    progressDialog.setProgress(progress);
                                 });
                             }
                         }
@@ -99,21 +72,15 @@ public class Utils {
                             int status = cursor.getInt(statusIndex);
                             if (status == DownloadManager.STATUS_SUCCESSFUL) {
                                 downloading = false;
-                                ((android.app.Activity) context).runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        progressDialog.dismiss();
-                                        Utils.showToast(context, "Download Complete");
-                                    }
+                                ((android.app.Activity) context).runOnUiThread(() -> {
+                                    progressDialog.dismiss();
+                                    Utils.showToast(context, "Download Complete");
                                 });
                             } else if (status == DownloadManager.STATUS_FAILED) {
                                 downloading = false;
-                                ((android.app.Activity) context).runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        progressDialog.dismiss();
-                                        Utils.showToast(context, "Download Failed");
-                                    }
+                                ((android.app.Activity) context).runOnUiThread(() -> {
+                                    progressDialog.dismiss();
+                                    Utils.showToast(context, "Download Failed");
                                 });
                             }
                         }
@@ -129,12 +96,6 @@ public class Utils {
     }
 
     public static void showToast(Context context, String message) {
-        android.widget.Toast toast = new android.widget.Toast(context);
-        toast.setDuration(android.widget.Toast.LENGTH_SHORT);
-        android.view.View view = android.view.LayoutInflater.from(context).inflate(R.layout.toast, null);
-        android.widget.TextView text = view.findViewById(R.id.toast_text);
-        text.setText(message);
-        toast.setView(view);
-        toast.show();
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 }
